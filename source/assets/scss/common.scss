@@ -1,0 +1,30 @@
+:root {
+  --test-variable: rgb(255,255,255);
+}
+
+* {
+  
+  box-sizing: border-box;
+  font-family: 'Segoe UI';
+  font-weight: 600;
+
+  color: black;
+
+  &::-webkit-scrollbar {
+    background-color: var(--color-accent-200);
+    width: .75vw;
+    border: .33vw solid var(--color-base-500);
+    &-thumb {
+      background-color: var(--color-accent-300);
+      border: 2px solid var(--color-base-500);;
+      border-radius: 4px;
+    }
+  }
+
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
