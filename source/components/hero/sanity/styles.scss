@@ -1,0 +1,60 @@
+.sanity {
+  &-container {
+
+    background: var(--color-base, #141418);
+    border-radius: 5px;
+    overflow: hidden;
+
+    display: grid;
+    grid-template: {
+      rows: .5vh 1fr;
+    };
+
+  }
+  &-progress {
+
+    width: 100%;
+    background: black;
+
+    &:after {
+      content: '';
+      display: block;
+      width: calc(100% * var(--w, 1));
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-accent), hsl(180, 100%, 50%));
+      transition: 500ms width ease-out;
+      will-change: width;
+    }
+
+  }
+  &-info {
+
+    padding: 0vh 1vw;
+
+    display: grid;
+    justify-content: left;
+    
+    grid-template-columns: auto 1fr auto auto auto;
+    gap: 1vh;
+
+    align-items: center;
+    font-size: 11px;
+
+    text-transform: uppercase;
+    
+    // DEBUG
+    button {
+      display: inline-block;
+      background: var(--color-base-sub);
+      border: 0px solid transparent;
+      padding: .5vh 2vw;
+      border-radius: 5px;
+    }
+
+    svg {
+      cursor: pointer;
+      transform: scale(1.5);
+    }
+
+  }
+}

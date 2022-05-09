@@ -13,16 +13,16 @@
 
   export type Props = Map<string, any>;
 
-  type ElementID = `${ string }-${ string }`;
+  type ElementID = string;
 
 // INTERFACES
-  export interface ComponentPayload<State,Props> {
+  export interface ComponentPayload<State = any,Props = any> {
     state?: State
     props?: Partial<Props>
     hooks: Partial<ComponentHooks>
   }
 
-  interface ComponentConstructor<State, Props> {
+  interface ComponentConstructor<State extends object, Props> {
     new (payload: ComponentPayload<State, Props>): Component<State,Props,any>
   }
 
@@ -35,7 +35,7 @@
   import { globalStore } from '~/store'
 
 // COMPONENT
-  export default abstract class Component<State, Props, ComponentKeys> {
+  export default abstract class Component<State extends object = {}, Props = {}, ComponentKeys = string> {
 
     // COMPONENT HASH ID
     protected readonly id: string = Math.random().toString(36).slice(-6).toUpperCase();
@@ -72,7 +72,7 @@
     }
 
     get elementID(): ElementID {
-      return `${ this.constructor.name }-${ this.id }`;
+      return `${ this.constructor.name }`;
     }
 
     //
@@ -89,8 +89,8 @@
         // Fire onMount method.
         if ( this.onMount ) this.onMount();
 
-        // // DEBUG
-        // console.debug(`[Component mounth]: ID: ${ this.id } | ${ this.constructor.name } was mounted `);
+        // DEBUG
+        console.debug(`[Component mounth]: ID: ${ this.id } | ${ this.constructor.name } was mounted `);
 
       })
 
@@ -107,8 +107,8 @@
         // Fire OnUpdate method.
         if ( this.onUpdate ) this.onUpdate();
 
-        // // DEBUG
-        // console.debug(`[Component update]: ID: ${ this.id } | ${ this.constructor.name } was updated `);
+        // DEBUG
+        console.debug(`[Component update]: ID: ${ this.id } | ${ this.constructor.name } was updated `);
 
       })
 
@@ -117,8 +117,8 @@
     }
 
     // Get element from DOM
-    protected getElement({ constructor, id }: Component<any,any,any>) {
-      return document.getElementById(`${ constructor.name }-${ id }`)
+    protected getElement({ constructor }: Component<any,any,any>) {
+      return document.getElementById(`${ constructor.name }`)
     }
 
     // Notify children components about render cycle completion.
@@ -139,7 +139,11 @@
     } 
 
     //
-    protected registerComponent<State,Props>(alias: ComponentKeys, component: ComponentConstructor<State,Props>, props?: Partial<Props>) {
+    protected registerComponent<State extends object,Props>(
+      alias     : ComponentKeys, 
+      component : ComponentConstructor<State,Props>, 
+      props    ?: Partial<Props>
+    ): Component<State,Props,any> {
 
       const payload: ComponentPayload<State,Props> = {
         state: undefined,
@@ -158,7 +162,10 @@
     abstract render(props?: object): TemplateResult<1>
 
     // Lifecycle methods declaration.
-    protected abstract onMount(): void;
-    protected abstract onUpdate(): void;
+    protected onMount(): void {
+    };
+    
+    protected onUpdate(): void {
+    };
 
   }

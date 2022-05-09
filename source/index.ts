@@ -6,16 +6,18 @@ import { html, render as LitRender } from 'lit-html';
 // STYLES
   import './assets/scss/common.scss';
 
-// INTERFACES
-  interface ApplicationState {
-    counter: number
-  }
+// COMPONENTS DECLARATION
+  type Components = 'HeroScene';
 
-// COMPONENTS
-  type ComponentKeys = string;
+  // ! Только для отладки макета.
+  // @ts-ignore
+  import Mockup from '~/assets/Application-original.png'
+
+// SCENE
+  import HeroScene from '~/layouts/hero'
 
 // MODULE
-  export class Instance extends Component<ApplicationState, null, ComponentKeys> {
+  export class Instance extends Component<any, null, Components> {
 
     private static update: RenderFunction;
 
@@ -28,6 +30,8 @@ import { html, render as LitRender } from 'lit-html';
       super({ hooks });
 
       Instance.update = () => this.render();
+
+      this.registerComponent('HeroScene', HeroScene)
 
       const mutObserver = new MutationObserver(() => {
         this.mounthed.set(true); mutObserver.disconnect();
@@ -46,9 +50,12 @@ import { html, render as LitRender } from 'lit-html';
     }  
 
     render() {
+      
+      // <img src="${ Mockup }" style="opacity: 1; position: absolute; z-index: -1">
+
       return html`
         <div class="application" id="${ this.elementID }">
-          Welcome
+          ${ this.components.get('HeroScene')?.render() }
         </div>
       `
     }

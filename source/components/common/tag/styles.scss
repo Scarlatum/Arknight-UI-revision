@@ -1,0 +1,18 @@
+.tag {
+  &-container {
+
+    height: 100%;
+    padding: 0 1vw;
+
+    background: var(--color-accent);
+    color: white;
+    display: inline-flex;
+    border-radius: 5px;
+
+    place-items: center;
+
+    text-transform: uppercase;
+    font-size: max(10px, 1.5vh);
+
+  }
+}
